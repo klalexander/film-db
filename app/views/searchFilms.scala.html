@@ -1,0 +1,100 @@
+@(flistId: Long)
+
+@main {
+
+    <div id="helpText"><b>Please press search and if there is no result press 'Reset'<br></br></br>
+        If you want add the movie please just click on it<br>
+    </div>
+    <br>
+    <br>
+    <div ng-app="myApp">
+
+        <div ng-controller="formCtrl">
+            <form  name="myForm" novalidate>
+                Film:<br>
+                <input type="text" name="searchInfText" ng-model="searchInf.text"><br>
+                <br><br>
+                <button ng-click="search(searchInf);">Search</button>
+                <button ng-click="reset()">Reset</button>
+            </form>
+        </div>
+
+        <div ng-controller="filmsCtrl">
+            <table>
+                <tr>
+                    <th>Picture</th>
+                    <th>Title</th>
+                    <th>Overview</th>
+                    <th>Id</th>
+                </tr>
+                <tr ng-repeat="film in films" ng-click="click(film)">
+                    <td><img ng-src="http://image.tmdb.org/t/p/w500{{film.poster_path}}"></td>
+                    <td>{{film.original_title}}</td>
+                    <td>{{film.overview}}</td>
+                    <td>{{film.id}}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+            var flistId = @flistId;
+            var app = angular.module('myApp', []);
+            app.controller('filmsCtrl', function ($scope,$rootScope,$http) {
+
+                $scope.films = [];
+
+                $scope.$on('handleBroadcast', function(event, data) {
+
+                    theMovieDb.search.getMovie({"query":encodeURIComponent(data)}, function(res) {
+
+                        var data = JSON.parse(res);
+
+                        $scope.films = data["results"];
+
+                        var httpRequest = $http({
+                            method: 'POST',
+                            url: '',
+                            data: data
+
+                        }).success(function(data, status) {
+                            $scope.films = data;
+                        });
+
+                    }, function(res) { console.log(res);});
+                });
+
+                $scope.click = function(film) {
+
+                    //need to add cheking for existing, if such record exit than notification message that such link is exist
+
+                    alert("id = " + film.id + "  and original_title = " + film.original_title);
+
+                    $http({
+                        method : "POST",
+                        url : "/film/" + film.id + "/" + flistId + "/" + film.original_title,
+                    }).then(function mySucces(response) {
+                        console.log(response);
+                    }, function myError(response) {
+                        console.log(response);
+                    });
+
+                };
+            });
+
+            app.controller('formCtrl', function($scope,$rootScope) {
+
+                $scope.master = {text: "The Lord of the Rings"};
+
+                $scope.reset = function() {
+                    $scope.searchInf = angular.copy($scope.master);
+                };
+                $scope.reset();
+
+                $scope.search = function(searchInf) {
+                    $rootScope.$broadcast('handleBroadcast',searchInf.text);
+                };
+            });
+    </script>
+}

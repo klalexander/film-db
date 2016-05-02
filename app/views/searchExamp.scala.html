@@ -1,0 +1,29 @@
+
+@main {
+    <body onload="init()">
+        <script src="@routes.Assets.at("javascripts/themoviedb/themoviedb.js")"></script>
+        <script src="@routes.Assets.at("javascripts/film.db.main.js")"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+        <title>Films</title>
+
+        <form name="myform">Enter film to the box: <BR>
+            <input type="text" name="inputbox" value="fight club">
+            <input type="button" name="button" value="Click" onClick="testResults(this.form)">
+        </form>
+
+        <table id="personDataTableTitle">
+            <tr>
+                <th>Select</th>
+                <th>Id</th>
+                <th>Original title</th>
+                <th>Overview</th>
+                <th>Popularity</th>
+                <th>Poster_path</th>
+                <th>Title</th>
+            </tr>
+        </table>
+
+        <table id="personDataTable"></table>
+    </body>
+    }

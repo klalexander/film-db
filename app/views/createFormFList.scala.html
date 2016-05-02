@@ -1,0 +1,24 @@
+@(fListForm: Form[FList])
+
+@import helper._
+
+@import b3.vertical.fieldConstructor
+
+@main {
+    
+    <h1>Add new film list</h1>
+    
+    @b3.form(routes.FListController.save()) {
+        
+        <fieldset>
+            @b3.text(fListForm("name"), '_label -> "Film List Name     :  ", '_help -> "")
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Create new film list" class="btn primary"> or
+            <a href="@routes.FListController.fListGetAll()" class="btn">Cancel</a>
+        </div>
+        
+    }
+    
+}

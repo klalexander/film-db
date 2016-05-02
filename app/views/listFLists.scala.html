@@ -1,0 +1,35 @@
+@(message: String)
+
+@main {
+    <div id="text"> Please click on selected film list</div>
+    <div ng-app="myApp">
+        <div ng-controller="fListCtrl">
+            <table>
+                <tr>
+                    <th>Film List Id</th>
+                    <th>Film List Name</th>
+                </tr>
+                <tr ng-repeat="fList in fLists" ng-click="click(fList)">
+                    <td>{{fList.id}}</td>
+                    <td>{{fList.name}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+            var app = angular.module('myApp', []);
+            app.controller('fListCtrl', function($scope, $http, $window) {
+                $scope.fLists = [];
+                var httpRequest = $http({
+                    method: 'GET',
+                    url: '/flist/all/',
+                }).success(function(data, status) {
+                    $scope.fLists = data;
+                });
+                $scope.click = function(fList) {
+                    $window.location.href = '/flist/'+fList.id+'/films/all';
+                };
+            });
+    </script>
+}

@@ -1,0 +1,30 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file                               controllers.Assets.at(path="/public", file)
+
+
+GET     /                                           controllers.FListController.fListGetAll()
+#
+#film lists actions
+#
+POST    /flist/:fListid/delete                      controllers.FListController.delete(fListid:Long)
+GET     /flist/new/                                 controllers.FListController.create()
+POST    /flist/                                     controllers.FListController.save()
+#old one dont use, after remove
+#GET     /film/lists/all                             controllers.FListController.listAll()
+GET     /flist/all                                  controllers.FListController.fListGetAll()
+GET     /flist/all/                                 controllers.FListController.listAll()
+GET     /flist/:fListId/films/all                   controllers.FListController.getAllFilmsForFList(fListId:Long)
+GET     /flist/films/:fListId                       controllers.FilmController.getFilmsByFListId(fListId:Long)
+#
+#films actions
+#
+POST   /film/:externalId/:fListId/:filmName         controllers.FilmController.save(externalId: Long, fListId: Long, filmName: String)
+POST   /film/:id/delete                             controllers.FilmController.delete(id:Long)
+GET    /film/:fListId/:filmId/:externalId/unique    controllers.FilmController.getUniqueLink(filmId:Long, fListId:Long, externalId:Long)
+GET    /film/search/:fListId                        controllers.FilmController.searchFilmsByFList(fListId:Long)
+GET    /film/search/                                controllers.FilmController.search()
+GET    /film/unique/:id                             controllers.FilmController.showUnique(id:String)

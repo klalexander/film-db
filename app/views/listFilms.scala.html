@@ -1,0 +1,49 @@
+@(fListId: Long)
+
+@main{
+    <div id="text"> To add new film please press :  <b><a href="@routes.FilmController.searchFilmsByFList(fListId)">[ADD NEW FILM TO FAVORITE]</a></b> to proceed.<br><br>
+    Please click on film to get unique link to this film.
+    </div><br><br><br>
+    <div ng-app="myApp">
+        <div ng-controller="filmsCtrl">
+            <table>
+                <tr>
+                    <th>Id</th>
+                    <th>Film External Id</th>
+                    <th>Film list Name</th>
+                </tr>
+                <tr ng-repeat="film in films" ng-click="click(film)">
+                    <td>{{film.id}}</td>
+                    <td>{{film.externalId}}</td>
+                    <td>{{film.name}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        var app = angular.module('myApp', []);
+
+        app.controller('filmsCtrl', function($scope, $http, $window) {
+
+            $scope.films = [];
+
+            var httpRequest = $http({
+                method: 'GET',
+                url: '/flist/films/'+@fListId,
+            }).success(function(data, status) {
+                $scope.films = data;
+            });
+
+            $scope.click = function(film) {
+                var httpRequest = $http({
+                    method: 'GET',
+                    url: '/film/@fListId/'+film.id+'/'+film.externalId+'/unique',
+                }).success(function(data, status) {
+                    $window.location.href = '/film/unique/'+data;
+                });
+            };
+        });
+    </script>
+}

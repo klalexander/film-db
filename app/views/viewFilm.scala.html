@@ -1,0 +1,41 @@
+@(filmDesc: String, filmName: String, filmExternalId: Long)
+
+@main {
+    <div ng-app="myApp">
+        <div ng-controller="filmsCtrl">
+            <table>
+                <tr>
+                    <th>Picture</th>
+                    <th>Title</th>
+                    <th>Overview</th>
+                    <th>Id</th>
+                </tr>
+                <tr ng-repeat="film in films">
+                    <td><img ng-src="http://image.tmdb.org/t/p/w500{{film.poster_path}}"></td>
+                    <td>{{film.original_title}}</td>
+                    <td>{{film.overview}}</td>
+                    <td>{{film.id}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+            var app = angular.module('myApp', []);
+            var data;
+            app.controller('filmsCtrl', function($scope, $http, $window) {
+
+                $scope.films = [];
+
+                var httpRequest = $http({
+                    method: 'GET',
+                    url: 'http://api.themoviedb.org/3/find/tt0993846?api_key=7a4de0fe5da237bdb52d1168dae8cd14&external_source=imdb_id',
+                }).success(function(data, status) {
+                    var jsonData = data["movie_results"];
+                    $scope.films = jsonData;
+                });
+            });
+
+    </script>
+}
