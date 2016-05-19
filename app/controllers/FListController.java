@@ -48,9 +48,7 @@ public class FListController extends Controller{
 
 
     public Result listAll() {
-        List<FList> fLists =  FList.find.findList();
-        // FList.find.all();
-        return ok(Json.toJson(fLists));
+        return ok(Json.toJson(FListService.getAllRecords()));
     }
     public Result fListGetAll() {
         return ok(listFLists.render("Your new application is ready."));
