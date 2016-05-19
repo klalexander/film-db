@@ -3,10 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -23,6 +20,7 @@ public class ULink extends Model {
     @Column(name = "flist_id")
     public Long flistId;
 
+    @OneToOne
     @Column(name = "film_id")
     public Long filmId;
 
